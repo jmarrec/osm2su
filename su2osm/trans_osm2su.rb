@@ -18,7 +18,7 @@ module Sketchup::Su2osm
     open_path = UI.openpanel("Import OSM file as SketchUp Groups", "", "*.osm")
 
     puts ""
-    puts ">>import start" # todo - would nice to have dialog stay open and then maybe one providing stats after it is done
+    puts ">>import start" # TODO: would be nice to have dialog stay open and then maybe one providing stats after it is done
 
     puts ""
     puts "File - " + open_path
@@ -27,7 +27,7 @@ module Sketchup::Su2osm
     clear_render_mode
 
     # remove existing osm2su objects
-    # todo - this is not working as expected and is causing crashes
+    # TODO: this is not working as expected and is causing crashes
     #remove_osm2su_objects
 
     # Open OSM file
@@ -57,7 +57,7 @@ module Sketchup::Su2osm
     # get SketchUp model and entities
     skp_model = Sketchup.active_model
     entities = skp_model.active_entities
-    status = skp_model.start_operation('Import OSM file as SketchUp Groups', true) # todo - this isn't doing what I thought, need to undo surface by surface
+    status = skp_model.start_operation('Import OSM file as SketchUp Groups', true) # TODO: this isn't doing what I thought, need to undo surface by surface
 
     # create layers matched to OpenStudio surface group types
     layers = skp_model.layers
@@ -138,7 +138,7 @@ module Sketchup::Su2osm
       end
       material.color = color
       if space_type.renderingColor.is_initialized then material.alpha = rendering_color.renderingAlphaValue/255.0 end  # fraction is used in Sketchup
-      material.set_attribute 'su2osm', 'space_type_uuid', space_type.handle
+      material.set_attribute 'su2osm', 'space_type_uuid', space_type.handle.to_s
       material.set_attribute 'su2osm', 'space_type_entity_id', material.entityID
       material.set_attribute 'su2osm', 'resource_type', "space_type"
     end
@@ -158,7 +158,7 @@ module Sketchup::Su2osm
       end
       material.color = color
       if thermal_zone.renderingColor.is_initialized then material.alpha = rendering_color.renderingAlphaValue/255.0 end  # fraction is used in Sketchup
-      material.set_attribute 'su2osm', 'thermal_zone_uuid', thermal_zone.handle
+      material.set_attribute 'su2osm', 'thermal_zone_uuid', thermal_zone.handle.to_s
       material.set_attribute 'su2osm', 'thermal_zone_entity_id', material.entityID
       material.set_attribute 'su2osm', 'resource_type', "thermal_zone"
     end
@@ -178,7 +178,7 @@ module Sketchup::Su2osm
       end
       material.color = color
       if story.renderingColor.is_initialized then material.alpha = rendering_color.renderingAlphaValue/255.0 end  # fraction is used in Sketchup
-      material.set_attribute 'su2osm', 'building_story_uuid', story.handle
+      material.set_attribute 'su2osm', 'building_story_uuid', story.handle.to_s
       material.set_attribute 'su2osm', 'building_story_entity_id', material.entityID
       material.set_attribute 'su2osm', 'resource_type', "building_story"
     end
@@ -187,26 +187,28 @@ module Sketchup::Su2osm
     spaces.each do |space|
       # create space
       group = make_group(Sketchup.active_model,space.name.get,"su2osm - Space",space.xOrigin,space.yOrigin,space.zOrigin,space.directionofRelativeNorth*-1)
-      group.set_attribute 'su2osm', 'space_uuid', space.handle
+      # Store the handle as string, otherwise will get populated as nil
+      group.set_attribute 'su2osm', 'space_uuid', space.handle.to_s
       group.set_attribute 'su2osm', 'entity_id', group.entityID # idea was to identify clone from original, but will need to re-populate this every time the SketchUp file is loaded (if the user saves that format)
       group.set_attribute 'su2osm', 'surface_group_type', "space"
 
       # populate space attributes
       if space.spaceType.is_initialized and !space.isSpaceTypeDefaulted # don't add attributes if space type is defaulted
         space_type = space.spaceType.get
+        # Store the handle as string, otherwise will get populated as nil
         group.set_attribute 'su2osm', 'space_type_name', space_type.name.to_s
-        group.set_attribute 'su2osm', 'space_type_uuid', space_type.handle
+        group.set_attribute 'su2osm', 'space_type_uuid', space_type.handle.to_s
         #puts group.get_attribute 'su2osm', 'space_type_name'
       end
       if space.thermalZone.is_initialized
         thermal_zone = space.thermalZone.get
         group.set_attribute 'su2osm', 'thermal_zone_name', thermal_zone.name.to_s
-        group.set_attribute 'su2osm', 'thermal_zone_uuid', thermal_zone.handle
+        group.set_attribute 'su2osm', 'thermal_zone_uuid', thermal_zone.handle.to_s
       end
       if space.buildingStory.is_initialized
         building_story = space.buildingStory.get
         group.set_attribute 'su2osm', 'building_story_name', building_story.name.to_s
-        group.set_attribute 'su2osm', 'building_story_uuid', building_story.handle
+        group.set_attribute 'su2osm', 'building_story_uuid', building_story.handle.to_s
       end
 
       # loop through base surfaces
@@ -289,7 +291,7 @@ module Sketchup::Su2osm
 
     end #end of shading_surface_groups.each do
 
-    #todo - see why spaces are not passing manifold solid test. Seems like old SketchUp issue where if I exploded and re-make it then shows as solid. Maybe even just re-open it.
+    # TODO: see why spaces are not passing manifold solid test. Seems like old SketchUp issue where if I exploded and re-make it then shows as solid. Maybe even just re-open it.
 
     #zoom extents
     view = Sketchup.active_model.active_view

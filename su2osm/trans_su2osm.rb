@@ -54,7 +54,7 @@ module Sketchup::Su2osm
     @interior_partition_groups = @background_osm_model.getInteriorPartitionSurfaceGroups
 
     puts ""
-    puts ">>merge start"  # todo - would be nice ot have dialog for this
+    puts ">>merge start"  # TODO: would be nice ot have dialog for this
 
     puts ""
 
@@ -167,7 +167,7 @@ module Sketchup::Su2osm
             end
           end #end of edges.each do
 
-          if edge_faces.uniq.size >= 3 # todo - update logic, this will catch doors with split floor under them
+          if edge_faces.uniq.size >= 3 # TODO: update logic, this will catch doors with split floor under them
             #this is a base surface
             base_surface_array << entity #later make hash that includes value of an array of sub surfaces?
           elsif edge_faces.uniq.size == 1 and edge_faces.size == edges.size #this second test checks for edge that doesn't match to any faces
@@ -200,9 +200,9 @@ module Sketchup::Su2osm
 
           end #end of edge_faces.uniq.size
 
-          #todo - should test that sub-surfaces don't have inner loop. If it does warn and ignore?
+          # TODO: should test that sub-surfaces don't have inner loop. If it does warn and ignore?
 
-          #todo - add in check for three faces sharing an edge. Generally should just be two
+          # TODO: add in check for three faces sharing an edge. Generally should just be two
 
         end #end of if entity.class.to_s == "Sketchup::Face"
       end #end of entities.each.do
@@ -733,6 +733,8 @@ module Sketchup::Su2osm
         store_current_material_to_space_attributes(group)
 
         # gather space attributes
+        # TODO: would be nice to actually use the UUID rather than names
+        # as they are more reliable
         space_type_name = group.get_attribute 'su2osm', 'space_type_name'
         space_type = space_type_hash[space_type_name.to_s]
         thermal_zone_name = group.get_attribute 'su2osm', 'thermal_zone_name'
@@ -827,13 +829,13 @@ module Sketchup::Su2osm
 
     end #end of if not merge_selected_only
 
-    #todo - warn user about loose top level surfaces
+    # TODO: warn user about loose top level surfaces
 
-    #todo - also in loop through groups above warn if things are nested too deep
+    # TODO: also in loop through groups above warn if things are nested too deep
 
-    #todo - could be nice to highlight things that are not valid by painting them or moving them to layer?
+    # TODO: could be nice to highlight things that are not valid by painting them or moving them to layer?
 
-    #todo - would be nice to keep check similar to know if file was saved elsewhere since the import happened, offer to reload or cancel operation.
+    # TODO: would be nice to keep check similar to know if file was saved elsewhere since the import happened, offer to reload or cancel operation.
 
     #put all of the spaces in the model into a vector
       if intersect_surfaces or match_surfaces
