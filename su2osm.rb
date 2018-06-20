@@ -14,9 +14,9 @@ su2osmExtension = SketchupExtension.new(
 
 su2osmExtension.description = $exStrings.GetString(
   "Adds su2osm of tools")
-su2osmExtension.version = "0.0.1"
+su2osmExtension.version = "0.0.2"
 su2osmExtension.creator = "David Goldwasser"
-su2osmExtension.copyright = "2015, David Goldwasser"
+su2osmExtension.copyright = "2015, David Goldwasser. 2018, Julien Marrec of EffiBEM"
 
 Sketchup.register_extension su2osmExtension, true
 
